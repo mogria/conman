@@ -5,13 +5,21 @@ from conman.repository import Repository
 def get_conman_home():
     return os.path.join(os.getenv("HOME"), ".conman")
 
+def get_repo(args):
+    return Repository(get_conman_home(), args['machine_name'])
+
 def conman_init(args):
-    repo = Repository.clone(args['git-repo'], get_conman_home())
+    repo = Repository.clone(args['git_repo'], get_conman_home(), args['machine_name'])
+
+def conman_list(args):
+    repo = get_repo(args)
+    repo.get_modules()
 
 def main():
     args = parse_args()
     routes = {
-        'init': conman_init
+        'init': conman_init,
+        'list': conman_list
     }
 
     if 'command' in args and args['command'] in routes:
