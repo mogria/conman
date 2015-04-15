@@ -31,7 +31,7 @@ In the future you should be able to get `conman` via `pip`. But for now, just cl
 
 Run the following command:
 
-    % conman new *git-repo* *machine-name*
+    % conman init *git-repo* *machine-name*
 
 The specified `git-repo` should only be used by conman, and you shouldn't just use github or something. Your configs to your e-mail client etc. might contain passwords, and you certainly don't want to publish them on github. Better use a private repo.
 
@@ -41,33 +41,37 @@ If you leave out the `machine-name` the hostname of the machine is used.
 
 With the following command you can create a new module:
 
-    % conman module create [module-name]
+    % conman new *module-name*
 
 To add config files to the module do the following:
 
-    % conman module [module-name] add files...
+    % conman add *module-name* *files...*
 
 It doesn't necessarily need to be a new file, you can update the files with the same command.
 
 But that isn't the whole deal, you need to specify which files will be linked to what location
 
-    % conman module [module-name] link [filename] [link-location]
+    % conman link *module-name* *filename* *link-location*
 
 ## Managing modules per machine
 
 Now in order to activate a module for the current machine do the following:
 
-    % conman module use [module-name]
+    % conman use *module-name*
 
 You can also say that an other machine should use a certain module.
 
-    % conman machine [machine-name] module use [module-name]
+    % conman --machine=*machine-name* use *module-name*
 
 ## Replicating configuration to an other machine
 
+To make your configurations and modules accessible to other machines execute:
+
+    % conman push
+
 If you're on an other machine and you want to update the configuration files, just type:
 
-    % conman update
+    % conman pull
 
 # Contributing
 
