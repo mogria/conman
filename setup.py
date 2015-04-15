@@ -86,7 +86,7 @@ setup(
     # pip to create the appropriate form of executable for the target platform.
     entry_points={
         'console_scripts': [
-            'conman = conman.__main__:main',
+            'conman = conman.__init__:main',
         ],
     },
 )
