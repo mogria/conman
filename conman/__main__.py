@@ -1,5 +1,6 @@
 import os
 import argparse
+
 def main():
     # % conman
     parser = argparse.ArgumentParser(description='Configuration manger.')
@@ -32,6 +33,10 @@ def main():
     parser_pull = subparsers.add_parser('pull', help='pull module and config changes from repository')
 
     args = parser.parse_args()
+    dispatch(args)
+
+def dispatch(args):
+    pass
 
 if __name__ == "__main__":
     main()
