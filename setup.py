@@ -57,7 +57,7 @@ setup(
     # requirements files see:
     # https://packaging.python.org/en/latest/requirements.html
     install_requires=[
-        'argparse>=1.3.0',
+        'argparse>=1.1.0',
         'gitpython>=1.0.0'
     ],
 
