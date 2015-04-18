@@ -15,8 +15,7 @@ def conman_list(args):
     repo = get_repo(args)
     repo.get_modules()
 
-def main():
-    args = parse_args()
+def dispatch(args):
     routes = {
         'init': conman_init,
         'list': conman_list
@@ -28,6 +27,11 @@ def main():
     else:
         print('error: unknown command')
         print_help()
+
+
+def main():
+    args = parse_args()
+    dispatch(args)
 
 if __name__ == "__init__":
     main()
