@@ -2,3 +2,5 @@ build
 dist
 *.pyc
 *.egg*
+__pycache__
+*.sw*
