@@ -51,15 +51,10 @@ class TestCli(unittest.TestCase):
 
     def test_link(self):
         module_name = 'random-module-c'
-        filename = 'somefile'
+        filepath = 'somefile'
         link_location = 'some_link_file'
-        result = self.parser.parse_args(['add', module_name, filename, link_location])
-        assert result.command == 'add'
+        result = self.parser.parse_args(['link', module_name, filepath, link_location])
+        assert result.command == 'link'
         assert result.module_name == module_name
-        assert result.file == filename
+        assert result.filepath == filepath
         assert result.link_location == link_location
-
-
-
-if __name__ == '__main__':
-    unittest.main()
