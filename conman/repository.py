@@ -11,33 +11,45 @@ class Repository(object):
         self.actor = Actor('conman', 'conman@' + machine)
 
         # make sure the repo looks nice ;-)
-        self.conmanify()
+        self.__conmanify()
 
     def clone(remote_url, directory, machine):
         Repo.clone_from(remote_url, directory)
         return Repository(directory, machine)
 
-    def create_modules_folder(self):
-        print('creating modules folder ...')
-        index = self.git_repo.index
-        modules_folder = os.path.join(self.directory, 'modules')
-        if not os.path.exists(modules_folder):
-            os.makedirs(modules_folder)
-        modules_keep_file = os.path.join(modules_folder, '.keep')
-        open(modules_keep_file, 'w').close()
-        index.add([modules_keep_file])
-        index.commit('initialized conman `modules/` folder', author=self.actor, committer=self.actor)
+    def get_modules(self):
+        trees = (self.git_repo.tree() / 'modules').trees
+        return [item.name for item in trees]
 
-    def create_machine_file(self):
-        pass
+    def add_module(self, name):
+        if self.is_module(name):
+            raise NameError('module named `' + name + '` already exists')
+        module_dir = self.get_module_directory(name)
+        Repository.__createdir(module_dir)
+        self.__commit('add module directory for `' + name + '`', [module_dir])
 
-    def conmanify(self):
+    def is_module(self, name):
+        return name in self.get_modules()
+
+    def get_module_directory(self, name):
+        return os.path.join(self.directory, 'modules', name)
+
+    def __create_modules_directory(self):
+        modules_directory = os.path.join(self.directory, 'modules')
+        Repository.__createdir(modules_directory)
+        self.__commit('initialized conman `modules/` directory', [modules_directory])
+
+    def __create_machine_file(self):
+        use_modules_file = os.path.join(self.directory, 'use-modules')
+        Repository.__createfile(use_modules_file)
+        self.__commit('create use-module file for machine `' + self.machine + '`', [use_modules_file])
+
+    def __conmanify(self):
         if len(self.git_repo.heads) == 0:
-            self.create_modules_folder()
+            self.__create_modules_directory()
 
-        print(self.git_repo.tree() / 'modules')
         if not 'modules' in self.git_repo.tree().trees:
-            self.create_modules_folder();
+            self.__create_modules_directory();
 
         if not self.branch in self.git_repo.heads:
             self.git_repo.create_head(self.branch, 'master')
@@ -46,9 +58,23 @@ class Repository(object):
         self.git_repo.head.reset(index=True, working_tree=True)
 
         if not 'use-modules' in self.git_repo.tree().blobs:
-            pass
+            self.__create_machine_file()
 
-    def get_modules(self):
-        tree = self.git_repo.tree()
-        for item in tree.traverse():
-            print(item)
+    def __commit(self, message, files):
+        index = self.git_repo.index
+        index.add(files)
+        index.commit(message, author=self.actor, committer=self.actor)
+
+    @staticmethod
+    def __createfile(filepath):
+        dirpath = os.path.dirname(filepath)
+        Repository.__createdir(dirpath, False)
+        open(filepath, 'w').close()
+
+    @staticmethod
+    def __createdir(dirpath, dotKeepFile=True):
+        if not os.path.isdir(dirpath):
+            os.makedirs(dirpath)
+        if dotKeepFile:
+            keep_file = os.path.join(dirpath, '.keep')
+            Repository.__createfile(keep_file)
