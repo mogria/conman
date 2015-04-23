@@ -56,5 +56,5 @@ class TestCli(unittest.TestCase):
         result = self.parser.parse_args(['link', module_name, filepath, link_location])
         assert result.command == 'link'
         assert result.module_name == module_name
-        assert result.filepath == filepath
+        assert result.filename == filepath
         assert result.link_location == link_location
