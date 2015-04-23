@@ -28,7 +28,7 @@ def create_parser():
     # % conman link *module-name* *filepath* *link_location*
     parser_link = subparsers.add_parser('link', help='symbolically link config files')
     parser_link.add_argument('module_name', help='name of the module')
-    parser_link.add_argument('filepath', help='file you want to link')
+    parser_link.add_argument('filename', help='file you want to link (relative to the module)')
     parser_link.add_argument('link_location', help='where you want to link the file to')
     parser_link.set_defaults(command='link')
 

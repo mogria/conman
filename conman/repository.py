@@ -8,12 +8,23 @@ class Repository(object):
     MODULES_DIR = "modules"
     USE_MODULES_FILE = "use-modules"
 
-    def __init__(self, directory, machine):
+    def __init__(self, directory, machine = None):
         """Create an instance by using a local repository"""
         self.directory = directory
-        self.machine = machine
-        self.branch = 'machine-' + machine
         self.git_repo = Repo(directory)
+
+        if machine != None:
+            self.machine = machine
+            self.branch = 'machine-' + machine
+        else:
+            self.branch = self.git_repo.active_branch.name
+            if self.branch.find('machine-') == 0:
+                offset = len('machine-') + 1
+                self.machine = self.branch[offset:]
+            else:
+                self.branch = 'master'
+                self.machine = 'master'
+
         self.actor = Actor('conman', 'conman@' + machine)
 
         # make sure the repo looks nice ;-)
