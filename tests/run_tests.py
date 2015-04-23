@@ -4,7 +4,7 @@ from glob import glob
 
 test_dir = os.path.dirname(os.path.realpath(__file__)) # tests/ directory
 os.chdir(test_dir);
-testmodules = ["tests." + os.path.splitext(f)[0] for f in glob("test_*.py")]
+testmodules = [os.path.splitext(f)[0] for f in glob("test_*.py")]
 
 suite = unittest.TestSuite()
 
