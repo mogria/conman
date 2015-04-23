@@ -1,10 +1,14 @@
 import os
+import sys
 import unittest
 from glob import glob
 
-test_dir = os.path.dirname(os.path.realpath(__file__)) # tests/ directory
-os.chdir(test_dir);
-testmodules = [os.path.splitext(f)[0] for f in glob("test_*.py")]
+source_dir = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
+sys.path.append(source_dir)
+os.chdir(source_dir);
+
+testfiles = os.path.join('conman', 'tests', 'test_*.py')
+testmodules = [os.path.splitext(f)[0].replace(os.sep, ".") for f in glob(testfiles)]
 
 suite = unittest.TestSuite()
 
