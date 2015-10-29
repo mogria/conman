@@ -23,7 +23,15 @@ And the best thing is, the `conman` command manages the git repository for you!
 
 # Install
 
-In the future you should be able to get `conman` via `pip`. But for now, just clone the repository and add the `conman` executable to your path, if you wish to do so.
+In the future you should be able to get `conman` via `pip`.
+
+But for now you can also use the install script from github:
+
+    % curl -s https://raw.githubusercontent.com/mogria/conman/master/install-from-web.sh | sh
+
+The script will use `sudo` to execute `python3 setup.py install`.
+
+You can also just clone the repository and add the `conman` executable to your path, if you wish to do so.
 
 # How to use
 
